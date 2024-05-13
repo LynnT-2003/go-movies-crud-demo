@@ -2,10 +2,10 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -91,6 +91,13 @@ func main() {
 	r.HandleFunc("/movies/{id}", updateMovie).Methods("PUT")
 	r.HandleFunc("/movies/{id}", deleteMovie).Methods("DELETE")
 
-	fmt.Println("Server is running on port 8000")
-	log.Fatal(http.ListenAndServe(":8000", r))
+	// fmt.Println("Server is running on port 8000")
+	// log.Fatal(http.ListenAndServe(":8000", r))
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8000" // Default to port 8000 if PORT environment variable is not set
+	}
+
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
